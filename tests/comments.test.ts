@@ -1,7 +1,6 @@
-/* eslint-disable no-undef */
-const app = require('../app')
-const request = require('supertest')
-const commentsList = require('../mocks/comments');
+import app from '../app';
+import  request  from 'supertest';
+import { commentsList } from '../mocks/comments'
 
 describe('GET /api/comments/:id', () => {
   it('return data for task 1', async () => {
@@ -20,14 +19,13 @@ describe('GET /api/comments/:id', () => {
 });
 
 describe('POST /api/comments/', () => {
-  const newComment = {
-    task_id: 1,
-    user_id: 1,
-    content: 'New comment',
-    created_at: new Date().toISOString(),
-  };
-
   it('return data with newTask', async () => {
+    const newComment = {
+      task_id: 1,
+      user_id: 1,
+      content: 'New comment',
+      created_at: new Date().toISOString(),
+    };
     
     const response = await request(app).post(`/api/comments`).send(newComment);
     const comments = [...commentsList, { id: commentsList.length +1, newComment }];
@@ -37,7 +35,11 @@ describe('POST /api/comments/', () => {
   });
 
   it('return error 400 with invalid data', async () => {
-    delete newComment.task_id;
+    const newComment = {
+      user_id: 1,
+      content: 'New comment',
+      created_at: new Date().toISOString(),
+    };
     const response = await request(app).post('/api/comments').send(newComment);
     expect(response.statusCode).toBe(400);
   });

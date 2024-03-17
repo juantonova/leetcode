@@ -91,4 +91,4 @@ const swaggerOptions = {
     apis: ['./routes/rating.js', './routes/comments.js', './routes/solutions.js', './routes/tasks.js', './routes/users.js'], // путь к файлам, где находятся ваши маршруты
 }
 
-module.exports = swaggerOptions;
+export default swaggerOptions;

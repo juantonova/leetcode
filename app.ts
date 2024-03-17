@@ -1,24 +1,24 @@
 // Импорт Express
-const express = require('express');
-const passport = require('passport');
-var session = require('express-session');
+import express from 'express';
+import passport from 'passport';
+import session from 'express-session';
 
 
 // Создание нового экземпляра Express
 const app = express();
 
 // swagger
-const swaggerJsDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
+import  swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 // Импорт роутов
-const ratingRouter = require('./routes/rating');
-const commentsRouter = require('./routes/comments');
-const solutionsRouter = require('./routes/solutions');
-const tasksRouter = require('./routes/tasks');
-const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth');
-const swaggerOptions = require('./swaggerOptions');
+import ratingRouter from './routes/rating';
+import commentsRouter from './routes/comments';
+import solutionsRouter from './routes/solutions';
+import tasksRouter from './routes/tasks';
+import usersRouter from './routes/users';
+import authRouter from './routes/auth';
+import swaggerOptions from './swaggerOptions';
 
 // настройка express session
 app.use(session({
@@ -57,4 +57,5 @@ if (process.env.NODE_ENV !== 'test') {
         }
     })
 }
-module.exports = app;
+
+export default app;

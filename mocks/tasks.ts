@@ -1,14 +1,15 @@
-const { Categories } = require("./categories");
-const Tags = require("./consts/tags");
+import { Task } from "../models/task";
+import { Categories } from "../models/consts/categories";
+import  { Tags } from "../models/consts/tags";
 
-const tasksList = [
+export const tasksList: Task[] = [
     {
         id: 1,
         description: "Given a string indicating a range of letters, return a string which includes all the letters in that range, including the last letter. Note that if the range is given in capital letters, return the string in capitals also!",
         incoming_example: "a-z",
         outgoing_example: "abcdefghijklmnopqrstuvwxyz",
         tags: [ Tags.STRINGS ],
-        category: Categories.ALGHORITHMS,
+        category: Categories.ALGORITHMS,
         additional_info: [ 'A hyphen will separate the two letters in the string.', 'You don\'t need to worry about error handling in this kata (i.e. both letters will be the same case and the second letter will not be before the first alphabetically).'],
         score: 7,
         title: 'From A to Z'
@@ -25,5 +26,3 @@ const tasksList = [
         title: 'From A to Z'
     },
 ]
-
-module.exports = tasksList;

@@ -1,4 +1,6 @@
-const categories = [
+import { Category } from "../models/category";
+
+export const categories: Category[] = [
     {
         id: 1,
         name: 'Algorithms'
@@ -18,12 +20,3 @@ const categories = [
     }
 ]
 
-
-const Categories = {
-    ALGHORITHMS: 1,
-    ARRAYS: 2,
-    RECURSION: 3,
-    DATA_SCIENCE: 4
-}
-
-module.exports = { categories, Categories }

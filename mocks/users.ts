@@ -1,12 +1,13 @@
-const Permissions = require('./consts/permissions');
-const Roles = require('./consts/roles');  
+import { User } from '../models/user';
+import { Permissions } from '../models/consts/permissions';
+import { Roles } from  '../models/consts/roles'
 
-const adminPermissions = Object.values(Permissions);
-const userPermissions = [Permissions.READ_TASK, Permissions.CREATE_COMMENT];
-const interviewerPermissions = [Permissions.READ_TASK, Permissions.READ_USER, Permissions.DELETE_TASK, Permissions.CREATE_COMMENT];
+const adminPermissions: Permissions[] = Object.values(Permissions);
+const userPermissions: Permissions[] = [Permissions.READ_TASK, Permissions.CREATE_COMMENT];
+const interviewerPermissions: Permissions[] = [Permissions.READ_TASK, Permissions.READ_USER, Permissions.DELETE_TASK, Permissions.CREATE_COMMENT];
 
 
-const usersList = [
+export const usersList: User[] = [
     {
         id: 1,
         role: Roles.ADMIN,
@@ -42,5 +43,3 @@ const usersList = [
         permissions: userPermissions
     },
 ]
-
-module.exports = usersList;

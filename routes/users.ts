@@ -1,7 +1,8 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+import { usersList } from '../mocks/users';
+import { Request, Response } from 'express';
 
-const usersList = require('../mocks/users');
+const usersRouter = express.Router();
 
 /**
  * @swagger
@@ -22,12 +23,12 @@ const usersList = require('../mocks/users');
  *                     $ref: '#/components/schemas/User'
  */
 
-router.get('/', (_, res) => {
+usersRouter.get('/', (_, res: Response) => {
     const list = usersList.map(user => ({ id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }));
     try {
         res.json({ users: [...list] });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
 })
 
@@ -54,7 +55,7 @@ router.get('/', (_, res) => {
  *         description: Пользователь не найден
  */
 
-router.get('/:id', (req, res) => {
+usersRouter.get('/:id', (req: Request, res: Response) => {
     try {
         const { id }= req.params || {};
     if (!id) {
@@ -69,7 +70,7 @@ router.get('/:id', (req, res) => {
     const userData = { id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }
     res.json({ user: userData });
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
 })
 
@@ -106,7 +107,7 @@ router.get('/:id', (req, res) => {
  *         description: Внутренняя ошибка сервера
  */
 
-router.delete('/:id', (req, res) => {
+usersRouter.delete('/:id', (req: Request, res: Response) => {
     try {
         const { id }= req.params || {};
         if (!id) {
@@ -116,7 +117,7 @@ router.delete('/:id', (req, res) => {
         const newUsersList = usersList.filter(user => Number(user.id) !== Number(id));
         res.json({ status: 'ok', user_id: id, users: newUsersList});
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
 })
 
@@ -152,24 +153,26 @@ router.delete('/:id', (req, res) => {
  *        description: Пользователь не найден
  */
 
-router.patch('/:id', (req, res) => {
+usersRouter.patch('/:id', (req: Request, res: Response) => {
+    try {
         const { rating } = req.body || {};
         const { id }= req.params || {};
         if (!id) {
             res.status(400).json({ error: 'User id is required' });
             return;
         }
-
+    
         const user = usersList.find(user => Number(user.id) === Number(id));
         if (!user) {
             res.status(404).json({ error: 'User not found' });
             return;
         }
-
+    
         const newUser ={ ...user, rating}
-        res.json({ status: 'ok', user: newUser});
-       
-        })
+        res.json({ status: 'ok', user: newUser});   
+    } catch(error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : error });
+    }
+})
 
-
-module.exports = router;
+export default usersRouter;

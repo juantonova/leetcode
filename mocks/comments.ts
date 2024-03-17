@@ -1,4 +1,6 @@
-const commentsList = [
+import { Comment } from "../models/comment";
+
+export const commentsList: Comment[] = [
     {
         id: 1,
         user_id: 1,
@@ -28,5 +30,3 @@ const commentsList = [
         created_at: "2022-07-20T00:00:00.000Z"
     },
 ]
-
-module.exports = commentsList;

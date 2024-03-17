@@ -1,7 +1,7 @@
-/* eslint-disable no-undef */
-const app = require('../app')
-const request = require('supertest')
-const solutionsList = require('../mocks/solutions');
+
+import  app from '../app'
+import request from 'supertest'
+import { solutionsList }  from '../mocks/solutions';
 
 describe('GET /api/solutions/:id', () => {
     it('return data for task 1', async () => {

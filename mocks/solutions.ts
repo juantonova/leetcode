@@ -1,6 +1,6 @@
+import { Solution } from "../models/solution";
 
-
-const solutionsList = [
+export const solutionsList: Solution[] = [
     {
         id: 1,
         user_id: 1,
@@ -15,5 +15,3 @@ const solutionsList = [
     },
     
 ]
-
-module.exports = solutionsList;
