@@ -1,4 +1,4 @@
-export enum Permissions {
+export enum PermissionAction {
     READ_TASK = 'readTask',
     CREATE_TASK = 'createTask',
     UPDATE_TASK = 'updateTask',

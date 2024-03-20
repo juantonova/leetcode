@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request, Response } from "express";
 
-import { solutionsList } from '../mocks/solutions';
+import { solutions } from '../mocks/solutions';
 
 const router = express.Router();
 
@@ -14,7 +14,7 @@ router.get('/:task_id', (req: Request, res: Response) => {
             return;
         }
     
-        const allSolutions = solutionsList.filter(solution => Number(solution.task_id) === Number(task_id));
+        const allSolutions = solutions.filter(solution => Number(solution.task_id) === Number(task_id));
         if (allSolutions.length === 0) {
             res.status(404).json({ error: 'Solutions are not found' });
             return;
@@ -36,13 +36,13 @@ router.post('/', (req: Request, res: Response) => {
         }
     
         const newSolution = {
-            id: solutionsList.length + 1,
+            id: solutions.length + 1,
             user_id,
             task_id,
             solution,
         };
     
-        res.json({ solutions: [ ...solutionsList, newSolution] });
+        res.json({ solutions: [ ...solutions, newSolution] });
     } catch(error) {
         res.status(500).json({ error: error instanceof Error ? error.message : error });
     }

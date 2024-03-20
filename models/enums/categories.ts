@@ -1,4 +1,4 @@
-export enum Categories  {
+export enum CategoryType  {
     ALGORITHMS,
     ARRAYS,
     RECURSION,

@@ -1,14 +1,14 @@
 
 import app from '../app';
 import request from 'supertest';
-import { tasksList } from '../mocks/tasks';
+import { tasks } from '../mocks/tasks';
 
 describe('GET /api/tasks/', () => {
     it('return all tasks', async () => {
       const response = await request(app).get(`/api/tasks/`);
   
       expect(response.statusCode).toBe(200);
-      expect(response.body.tasks).toEqual(tasksList);
+      expect(response.body.tasks).toEqual(tasks);
     });
 });
 
@@ -17,7 +17,7 @@ describe('GET /api/tasks/:id', () => {
       const response = await request(app).get(`/api/tasks/1`);
   
       expect(response.statusCode).toBe(200);
-      expect(response.body.task).toEqual(tasksList.find(task => task.id === 1));
+      expect(response.body.task).toEqual(tasks.find(task => task.id === 1));
     });
 
     it('return error 404', async () => {
@@ -43,7 +43,7 @@ describe('POST /api/tasks', () => {
       const response = await request(app).post(`/api/tasks`).send(newTask);
   
       expect(response.statusCode).toBe(200);
-      expect(response.body.tasks).toEqual([...tasksList, newTask]);
+      expect(response.body.tasks).toEqual([...tasks, newTask]);
     });
 
     it('return error 404', async () => {
@@ -68,7 +68,7 @@ describe('DELETE /api/tasks/:id', () => {
       const response = await request(app).delete(`/api/tasks/1`);
   
       expect(response.statusCode).toBe(200);
-      expect(response.body.tasks).toEqual(tasksList.filter(task => task.id !== 1));
+      expect(response.body.tasks).toEqual(tasks.filter(task => task.id !== 1));
     });
 })
 
@@ -81,7 +81,7 @@ describe('PATCH /api/tasks/:id', () => {
     it('update task 1', async () => {
       const response = await request(app).patch(`/api/tasks/1`).send(newTask);
 
-      const updatedTask = tasksList.find(task => Number(task.id) === 1);
+      const updatedTask = tasks.find(task => Number(task.id) === 1);
   
       expect(response.statusCode).toBe(200);
       expect(response.body.task).toEqual({ ...updatedTask, ...newTask});

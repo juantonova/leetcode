@@ -1,12 +1,12 @@
 import app from '../app'
 import request from 'supertest'
-import { usersList } from '../mocks/users';
+import { users } from '../mocks/users';
 
 describe('GET /api/users/', () => {
     it('return all users', async () => {
       const response = await request(app).get(`/api/users`);
 
-      const list = usersList.map(user => ({ id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }));
+      const list = users.map(user => ({ id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }));
   
       expect(response.statusCode).toBe(200);
       expect(response.body.users).toEqual(list);
@@ -16,7 +16,7 @@ describe('GET /api/users/', () => {
 describe('GET /api/users/:id', () => {
     it('return user 1', async () => {
       const response = await request(app).get(`/api/users/1`);
-      const user = usersList.find(user => Number(user.id) === 1);
+      const user = users.find(user => Number(user.id) === 1);
       if (!user) throw new Error('User not found');
       const userData = { id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }
   
@@ -47,7 +47,7 @@ describe('PATCH /api/users/:id', () => {
     it('update user 1', async () => {
       const response = await request(app).patch(`/api/users/1`).send(updatedData);
 
-      const user = usersList.find(user => Number(user.id) === 1);
+      const user = users.find(user => Number(user.id) === 1);
   
       expect(response.statusCode).toBe(200);
       expect(response.body.user).toEqual({...user, ...updatedData});

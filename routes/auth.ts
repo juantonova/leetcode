@@ -3,7 +3,7 @@ import passport from 'passport';
 import express, { Request, Response } from 'express';
 import crypto from 'crypto';
 import process from 'process';
-import { usersList as db } from '../mocks/users';
+import { users as db } from '../mocks/users';
 import  { Strategy } from 'passport-local';
 
 const LocalStrategy = Strategy;

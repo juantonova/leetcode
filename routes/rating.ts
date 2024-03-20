@@ -1,7 +1,7 @@
 import  express from 'express';
 import { Request, Response } from "express";
 
-import  { ratingsList } from '../mocks/rating';
+import  { ratings } from '../mocks/rating';
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.get('/:task_id', (req: Request, res: Response) => {
             res.status(400).json({ error: 'Task id is required' });
             return;
         }
-        const allRating = ratingsList.filter(rate => Number(rate.task_id) === Number(task_id));
+        const allRating = ratings.filter(rate => Number(rate.task_id) === Number(task_id));
         if (allRating.length === 0) {
             res.status(404).json({ error: 'Rating not found' });
             return;
@@ -35,12 +35,12 @@ router.post('/', (req: Request, res: Response) => {
         }
 
         const newRating = {
-            id: ratingsList.length + 1,
+            id: ratings.length + 1,
             user_id,
             task_id,
             rating,
         };
-        res.json({ rating: [...ratingsList, newRating] });
+        res.json({ rating: [...ratings, newRating] });
     } catch (error) {
         res.status(500).json({ error: error instanceof Error ? error.message : error });
     }

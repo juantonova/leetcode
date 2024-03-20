@@ -1,6 +1,6 @@
 import { Rating } from "../models/rating";
 
-export const ratingsList: Rating[] = [
+export const ratings: Rating[] = [
     {
         id: 1,
         user_id: 1,

@@ -1,16 +1,16 @@
 import { User } from '../models/user';
-import { Permissions } from '../models/consts/permissions';
-import { Roles } from  '../models/consts/roles'
+import { PermissionAction } from '../models/enums/permissions';
+import { Role } from  '../models/enums/roles'
 
-const adminPermissions: Permissions[] = Object.values(Permissions);
-const userPermissions: Permissions[] = [Permissions.READ_TASK, Permissions.CREATE_COMMENT];
-const interviewerPermissions: Permissions[] = [Permissions.READ_TASK, Permissions.READ_USER, Permissions.DELETE_TASK, Permissions.CREATE_COMMENT];
+const adminPermissions = Object.values(PermissionAction);
+const userPermissions = [PermissionAction.READ_TASK, PermissionAction.CREATE_COMMENT];
+const interviewerPermissions = [PermissionAction.READ_TASK, PermissionAction.READ_USER, PermissionAction.DELETE_TASK, PermissionAction.CREATE_COMMENT];
 
 
-export const usersList: User[] = [
+export const users: User[] = [
     {
         id: 1,
-        role: Roles.ADMIN,
+        role: Role.ADMIN,
         name: "Юрий",
         login: 'admin',
         password: 'admin',
@@ -18,7 +18,7 @@ export const usersList: User[] = [
     },
     {
         id: 2,
-        role: Roles.USER,
+        role: Role.USER,
         name: "Аркадий",
         login: 'user',
         password: 'user',
@@ -27,7 +27,7 @@ export const usersList: User[] = [
     },
     {
         id: 3,
-        role: Roles.INTERVIEWER,
+        role: Role.INTERVIEWER,
         name: "Василий",
         login: 'interviewer',
         password: 'interviewer',
@@ -35,7 +35,7 @@ export const usersList: User[] = [
     },
     {
         id: 4,
-        role: Roles.USER,
+        role: Role.USER,
         name: "Виктория",
         login: 'user',
         password: 'user',

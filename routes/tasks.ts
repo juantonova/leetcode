@@ -1,7 +1,7 @@
 import express from 'express';
 import { Request, Response } from "express";
 
-import { tasksList } from '../mocks/tasks';
+import { tasks } from '../mocks/tasks';
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ const router = express.Router();
 
 router.get("/", (_, res: Response) => {
     try {
-        res.json({ tasks: tasksList });
+        res.json({ tasks });
     } catch(error) {
         res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
@@ -68,7 +68,7 @@ router.get('/:id', (req: Request, res: Response) => {
             res.status(400).json({ error: 'Task id is required' });
             return;
         }
-        const task = tasksList.find(task => Number(task.id) === Number(id));
+        const task = tasks.find(task => Number(task.id) === Number(id));
         if (!task) {
             res.status(404).json({ error: 'Task not found' });
             return;
@@ -115,8 +115,8 @@ router.post('/', (req: Request, res: Response) => {
             return;
         }
     
-        const newTask = { id: tasksList.length + 1, ...req.body };
-        res.json({ tasks: [...tasksList, newTask]}); 
+        const newTask = { id: tasks.length + 1, ...req.body };
+        res.json({ tasks: [...tasks, newTask]}); 
     } catch(error) {
         res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
@@ -160,8 +160,8 @@ router.delete('/:id', (req: Request, res: Response) => {
             res.status(400).json({ error: 'Task id is required' });
             return;
         }
-        const newTasksList = tasksList.filter(task => Number(task.id) !== Number(id));
-        res.json({ status: 'ok', tasks: newTasksList });
+        const newTasks = tasks.filter(task => Number(task.id) !== Number(id));
+        res.json({ status: 'ok', tasks: newTasks });
     } catch(error) {
         res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
@@ -206,7 +206,7 @@ router.patch('/:id', (req: Request, res: Response) => {
             return;
         }
 
-        const task = tasksList.find(task => Number(task.id) === Number(id));
+        const task = tasks.find(task => Number(task.id) === Number(id));
         if (!task) {
             res.status(404).json({ error: 'Task not found' });
             return;

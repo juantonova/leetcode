@@ -1,5 +1,5 @@
 import express from 'express';
-import { usersList } from '../mocks/users';
+import { users } from '../mocks/users';
 import { Request, Response } from 'express';
 
 const usersRouter = express.Router();
@@ -24,7 +24,7 @@ const usersRouter = express.Router();
  */
 
 usersRouter.get('/', (_, res: Response) => {
-    const list = usersList.map(user => ({ id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }));
+    const list = users.map(user => ({ id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }));
     try {
         res.json({ users: [...list] });
     } catch (error) {
@@ -62,7 +62,7 @@ usersRouter.get('/:id', (req: Request, res: Response) => {
         res.status(400).json({ error: 'User id is required' });
         return;
     }
-    const user = usersList.find(user => Number(user.id) === Number(id));
+    const user = users.find(user => Number(user.id) === Number(id));
     if (!user) {
         res.status(404).json({ error: 'User not found' });
         return;
@@ -114,8 +114,8 @@ usersRouter.delete('/:id', (req: Request, res: Response) => {
             res.status(400).json({ error: 'User id is required' });
             return;
         }
-        const newUsersList = usersList.filter(user => Number(user.id) !== Number(id));
-        res.json({ status: 'ok', user_id: id, users: newUsersList});
+        const newUsers = users.filter(user => Number(user.id) !== Number(id));
+        res.json({ status: 'ok', user_id: id, users: newUsers });
     } catch (error) {
         res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
@@ -162,7 +162,7 @@ usersRouter.patch('/:id', (req: Request, res: Response) => {
             return;
         }
     
-        const user = usersList.find(user => Number(user.id) === Number(id));
+        const user = users.find(user => Number(user.id) === Number(id));
         if (!user) {
             res.status(404).json({ error: 'User not found' });
             return;

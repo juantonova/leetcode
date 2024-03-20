@@ -1,6 +1,6 @@
 import { Solution } from "../models/solution";
 
-export const solutionsList: Solution[] = [
+export const solutions: Solution[] = [
     {
         id: 1,
         user_id: 1,

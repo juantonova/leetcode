@@ -1,6 +1,6 @@
 import { Comment } from "../models/comment";
 
-export const commentsList: Comment[] = [
+export const comments: Comment[] = [
     {
         id: 1,
         user_id: 1,

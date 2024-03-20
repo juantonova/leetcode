@@ -1,12 +1,12 @@
 import app from '../app';
 import  request  from 'supertest';
-import { commentsList } from '../mocks/comments'
+import { comments } from '../mocks/comments'
 
 describe('GET /api/comments/:id', () => {
   it('return data for task 1', async () => {
     const taskId = 1
     const response = await request(app).get(`/api/comments/${taskId}`);
-    const taskComments = commentsList.filter(comment => comment.task_id === taskId);
+    const taskComments = comments.filter(comment => comment.task_id === taskId);
 
     expect(response.statusCode).toBe(200);
     expect(response.body.comments.length).toBe(taskComments.length);
@@ -28,10 +28,10 @@ describe('POST /api/comments/', () => {
     };
     
     const response = await request(app).post(`/api/comments`).send(newComment);
-    const comments = [...commentsList, { id: commentsList.length +1, newComment }];
+    const commentsList = [...comments, { id: comments.length +1, newComment }];
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.comments.length).toBe(comments.length);
+    expect(response.body.comments.length).toBe(commentsList.length);
   });
 
   it('return error 400 with invalid data', async () => {
@@ -51,7 +51,7 @@ describe('DELETE /api/comments/:id', () => {
     const response = await request(app).delete(`/api/comments/1`);
 
     expect(response.statusCode).toBe(200);
-    expect(response.body.comments.length).toBe(commentsList.length - 1);
+    expect(response.body.comments.length).toBe(comments.length - 1);
   });
 
 
