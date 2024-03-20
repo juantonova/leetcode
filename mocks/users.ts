@@ -1,15 +1,16 @@
-const Permissions = require('./consts/permissions');
-const Roles = require('./consts/roles');  
+import { User } from '../models/user';
+import { PermissionAction } from '../models/enums/permissions';
+import { Role } from  '../models/enums/roles'
 
-const adminPermissions = Object.values(Permissions);
-const userPermissions = [Permissions.READ_TASK, Permissions.CREATE_COMMENT];
-const interviewerPermissions = [Permissions.READ_TASK, Permissions.READ_USER, Permissions.DELETE_TASK, Permissions.CREATE_COMMENT];
+const adminPermissions = Object.values(PermissionAction);
+const userPermissions = [PermissionAction.READ_TASK, PermissionAction.CREATE_COMMENT];
+const interviewerPermissions = [PermissionAction.READ_TASK, PermissionAction.READ_USER, PermissionAction.DELETE_TASK, PermissionAction.CREATE_COMMENT];
 
 
-const usersList = [
+export const users: User[] = [
     {
         id: 1,
-        role: Roles.ADMIN,
+        role: Role.ADMIN,
         name: "Юрий",
         login: 'admin',
         password: 'admin',
@@ -17,7 +18,7 @@ const usersList = [
     },
     {
         id: 2,
-        role: Roles.USER,
+        role: Role.USER,
         name: "Аркадий",
         login: 'user',
         password: 'user',
@@ -26,7 +27,7 @@ const usersList = [
     },
     {
         id: 3,
-        role: Roles.INTERVIEWER,
+        role: Role.INTERVIEWER,
         name: "Василий",
         login: 'interviewer',
         password: 'interviewer',
@@ -34,7 +35,7 @@ const usersList = [
     },
     {
         id: 4,
-        role: Roles.USER,
+        role: Role.USER,
         name: "Виктория",
         login: 'user',
         password: 'user',
@@ -42,5 +43,3 @@ const usersList = [
         permissions: userPermissions
     },
 ]
-
-module.exports = usersList;

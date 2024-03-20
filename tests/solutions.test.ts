@@ -1,13 +1,13 @@
-/* eslint-disable no-undef */
-const app = require('../app')
-const request = require('supertest')
-const solutionsList = require('../mocks/solutions');
+
+import  app from '../app'
+import request from 'supertest'
+import { solutions }  from '../mocks/solutions';
 
 describe('GET /api/solutions/:id', () => {
     it('return data for task 1', async () => {
       const taskId = 1
       const response = await request(app).get(`/api/solutions/${taskId}`);
-      const taskSolutions = solutionsList.filter(solution => Number(solution.task_id) === taskId);
+      const taskSolutions = solutions.filter(solution => Number(solution.task_id) === taskId);
   
       expect(response.statusCode).toBe(200);
       expect(response.body.solutions).toEqual(taskSolutions);
@@ -27,10 +27,10 @@ describe('POST /api/solutions', () => {
             solution: 'New solution',
         };
         const response = await request(app).post(`/api/solutions`).send(newSolution);
-        const solutions = [...solutionsList, { id: solutionsList.length +1, ...newSolution }];
+        const newSolutions = [...solutions, { id: solutions.length +1, ...newSolution }];
   
         expect(response.statusCode).toBe(200);
-        expect(response.body.solutions).toEqual(solutions);
+        expect(response.body.solutions).toEqual(newSolutions);
 
     })
 })

@@ -1,7 +1,9 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+import { Request, Response } from "express";
 
-const tasksList = require('../mocks/tasks');
+import { tasks } from '../mocks/tasks';
+
+const router = express.Router();
 
 /**
  * @swagger
@@ -23,11 +25,12 @@ const tasksList = require('../mocks/tasks');
  *       500:
  *         description: Ошибка сервера
  */
-router.get("/", (_, res) => {
+
+router.get("/", (_, res: Response) => {
     try {
-        res.json({ tasks: tasksList });
+        res.json({ tasks });
     } catch(error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
 })
 
@@ -58,21 +61,21 @@ router.get("/", (_, res) => {
  *       500:
  *        description: Ошибка сервера
  */
-router.get('/:id', (req, res) => {
+router.get('/:id', (req: Request, res: Response) => {
     try {
         const { id }= req.params || {};
         if (!id) {
             res.status(400).json({ error: 'Task id is required' });
             return;
         }
-        const task = tasksList.find(task => Number(task.id) === Number(id));
+        const task = tasks.find(task => Number(task.id) === Number(id));
         if (!task) {
             res.status(404).json({ error: 'Task not found' });
             return;
         }
         res.json({ task });
     } catch(error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
 })
 
@@ -104,7 +107,7 @@ router.get('/:id', (req, res) => {
  *       500:
  *        description: Ошибка сервера
  */
-router.post('/', (req, res) => {
+router.post('/', (req: Request, res: Response) => {
     try {
         const { description, incoming_example, outgoing_example, tags, category, additional_info, score, title } = req.body || {};
         if (!description || !incoming_example || !outgoing_example || !tags || !category || !additional_info || !score || !title) {
@@ -112,10 +115,10 @@ router.post('/', (req, res) => {
             return;
         }
     
-        const newTask = { id: tasksList.length + 1, ...req.body };
-        res.json({ tasks: [...tasksList, newTask]}); 
+        const newTask = { id: tasks.length + 1, ...req.body };
+        res.json({ tasks: [...tasks, newTask]}); 
     } catch(error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
 })
 
@@ -150,17 +153,17 @@ router.post('/', (req, res) => {
  *       500:
  *        description: Ошибка сервера
  */
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req: Request, res: Response) => {
     try {
         const { id }= req.params || {};
         if (!id) {
             res.status(400).json({ error: 'Task id is required' });
             return;
         }
-        const newTasksList = tasksList.filter(task => Number(task.id) !== Number(id));
-        res.json({ status: 'ok', tasks: newTasksList });
+        const newTasks = tasks.filter(task => Number(task.id) !== Number(id));
+        res.json({ status: 'ok', tasks: newTasks });
     } catch(error) {
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
 })
 
@@ -194,7 +197,7 @@ router.delete('/:id', (req, res) => {
  *        description: Ошибка сервера
  */
 
-router.patch('/:id', (req, res) => {
+router.patch('/:id', (req: Request, res: Response) => {
     try {
         const { task: updatedTask } = req.body || {};
         const { id }= req.params || {};
@@ -203,7 +206,7 @@ router.patch('/:id', (req, res) => {
             return;
         }
 
-        const task = tasksList.find(task => Number(task.id) === Number(id));
+        const task = tasks.find(task => Number(task.id) === Number(id));
         if (!task) {
             res.status(404).json({ error: 'Task not found' });
             return;
@@ -212,9 +215,9 @@ router.patch('/:id', (req, res) => {
         const newTask = { ... task, ...updatedTask}
         res.json({ status: 'ok', task: newTask });
     } catch (error) {
-    res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error instanceof Error ? error.message : error });
     }
 })
 
 
-module.exports = router;
+export default router;

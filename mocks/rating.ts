@@ -1,4 +1,6 @@
-const ratingsList = [
+import { Rating } from "../models/rating";
+
+export const ratings: Rating[] = [
     {
         id: 1,
         user_id: 1,
@@ -24,5 +26,3 @@ const ratingsList = [
         rating: 3,
     },
 ]
-
-module.exports = ratingsList;

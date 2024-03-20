@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
-const app = require('../app')
-const request = require('supertest');
-const ratingList = require('../mocks/rating');
+import app from '../app'
+import  request from 'supertest';
+import { ratings} from '../mocks/rating';
 
 describe('GET /api/rating/:task_id', () => {
     it('return rating for task 2', async () => {
@@ -26,7 +26,7 @@ describe('GET /api/rating/:task_id', () => {
     it('return rating for new task', async () => {
         const response = await request(app).post('/api/rating/').send(newRating);
         expect(response.status).toBe(200);
-        expect(response.body.rating.length).toEqual(ratingList.length + 1);
+        expect(response.body.rating.length).toEqual(ratings.length + 1);
     });
   
   })

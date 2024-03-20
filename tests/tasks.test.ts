@@ -1,7 +1,7 @@
-/* eslint-disable no-undef */
-const app = require('../app')
-const request = require('supertest')
-const tasks = require('../mocks/tasks');
+
+import app from '../app';
+import request from 'supertest';
+import { tasks } from '../mocks/tasks';
 
 describe('GET /api/tasks/', () => {
     it('return all tasks', async () => {
@@ -28,7 +28,8 @@ describe('GET /api/tasks/:id', () => {
 });
 
 describe('POST /api/tasks', () => {
-    const newTask =     {
+    it('add new task', async () => {
+      const newTask = {
         id: 3,
         description: "Given a string indicating a range of letters, return a string which includes all the letters in that range, including the last letter. Note that if the range is given in capital letters, return the string in capitals also!",
         incoming_example: "a-z",
@@ -39,8 +40,6 @@ describe('POST /api/tasks', () => {
         score: 7,
         title: 'From A to Z'
     };
-
-    it('add new task', async () => {
       const response = await request(app).post(`/api/tasks`).send(newTask);
   
       expect(response.statusCode).toBe(200);
@@ -48,7 +47,16 @@ describe('POST /api/tasks', () => {
     });
 
     it('return error 404', async () => {
-        delete newTask.description;
+      const newTask = {
+        id: 3,
+        incoming_example: "a-z",
+        outgoing_example: "abcdefghijklmnopqrstuvwxyz",
+        tags: [ '111' ],
+        category: 1,
+        additional_info: [ 'A hyphen will separate the two letters in the string.', 'You don\'t need to worry about error handling in this kata (i.e. both letters will be the same case and the second letter will not be before the first alphabetically).'],
+        score: 7,
+        title: 'From A to Z'
+    };
         const response = await request(app).post(`/api/tasks`).send(newTask);
     
         expect(response.statusCode).toBe(400);
