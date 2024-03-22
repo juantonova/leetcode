@@ -1,7 +1,6 @@
 // Импорт Express
 import express from 'express';
 
-
 // Создание нового экземпляра Express
 const app = express();
 
@@ -16,6 +15,7 @@ import solutionsRouter from './routes/solutions';
 import tasksRouter from './routes/tasks';
 import usersRouter from './routes/users';
 import swaggerOptions from './swaggerOptions';
+import ErrorHandler from './middlewares/ErrorHandler';
 
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -30,6 +30,8 @@ app.use('/api/comments', commentsRouter);
 app.use('/api/solutions', solutionsRouter);
 app.use('/api/tasks', tasksRouter);
 app.use('/api/users', usersRouter);
+
+app.use(ErrorHandler)
 
 // Определение порта
 const port = 3000;

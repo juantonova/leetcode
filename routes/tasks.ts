@@ -1,7 +1,8 @@
-import express from 'express';
+import express, { NextFunction } from 'express';
 import { Request, Response } from "express";
 
 import { tasks } from '../mocks/tasks';
+import { BadRequestError, NotFoundError } from '../models/errors';
 
 const router = express.Router();
 
@@ -26,11 +27,11 @@ const router = express.Router();
  *         description: Ошибка сервера
  */
 
-router.get("/", (_, res: Response) => {
+router.get("/", (_, res: Response, next: NextFunction) => {
     try {
         res.json({ tasks });
     } catch(error) {
-        res.status(500).json({ error: error instanceof Error ? error.message : error });
+        next(error)
     }
 })
 
@@ -56,26 +57,22 @@ router.get("/", (_, res: Response) => {
  *               properties:
  *                 task:
  *                   type: '#/components/schemas/Task'
+ *       400:
+ *         description: Task id is required
  *       404:
- *         description: Задача не найдена
+ *         description: Task not found
  *       500:
- *        description: Ошибка сервера
+ *         description: Something went wrong
  */
-router.get('/:id', (req: Request, res: Response) => {
+router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id }= req.params || {};
-        if (!id) {
-            res.status(400).json({ error: 'Task id is required' });
-            return;
-        }
+        if (!id) throw new BadRequestError('Task id is required');
         const task = tasks.find(task => Number(task.id) === Number(id));
-        if (!task) {
-            res.status(404).json({ error: 'Task not found' });
-            return;
-        }
+        if (!task) throw new NotFoundError('Task not found');
         res.json({ task });
     } catch(error) {
-        res.status(500).json({ error: error instanceof Error ? error.message : error });
+        next(error)
     }
 })
 
@@ -103,22 +100,21 @@ router.get('/:id', (req: Request, res: Response) => {
  *                   type: array
  *                   items:  '#/components/schemas/Task'
  *       400:
- *         description: Не все данные переданы
+ *         description: Invalid request
  *       500:
- *        description: Ошибка сервера
+ *         description: Something went wrong
  */
-router.post('/', (req: Request, res: Response) => {
+router.post('/', (req: Request, res: Response, next: NextFunction) => {
     try {
         const { description, incoming_example, outgoing_example, tags, category, additional_info, score, title } = req.body || {};
         if (!description || !incoming_example || !outgoing_example || !tags || !category || !additional_info || !score || !title) {
-            res.status(400).json({ error: 'Full data required' });
-            return;
+            throw new BadRequestError('Invalid request');
         }
     
         const newTask = { id: tasks.length + 1, ...req.body };
-        res.json({ tasks: [...tasks, newTask]}); 
+        res.json({ task: newTask }); 
     } catch(error) {
-        res.status(500).json({ error: error instanceof Error ? error.message : error });
+        next(error);
     }
 })
 
@@ -149,21 +145,18 @@ router.post('/', (req: Request, res: Response) => {
  *                 status: 
  *                   type: string
  *       400:
- *         description: Не все данные переданы
+ *         description: Task id is required
  *       500:
- *        description: Ошибка сервера
+ *         description: Something went wrong
  */
-router.delete('/:id', (req: Request, res: Response) => {
+router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id }= req.params || {};
-        if (!id) {
-            res.status(400).json({ error: 'Task id is required' });
-            return;
-        }
+        if (!id) throw new BadRequestError('Task id is required');
         const newTasks = tasks.filter(task => Number(task.id) !== Number(id));
-        res.json({ status: 'ok', tasks: newTasks });
+        res.json({ task_id: id });
     } catch(error) {
-        res.status(500).json({ error: error instanceof Error ? error.message : error });
+        next(error)
     }
 })
 
@@ -191,31 +184,27 @@ router.delete('/:id', (req: Request, res: Response) => {
  *                   type:  '#/components/schemas/Task'
  *                 status: 
  *                   type: string
+ *       400:
+ *         description: Task id is required
  *       404:
- *         description: Задача не найдена
+ *         description: Task not found
  *       500:
- *        description: Ошибка сервера
+ *         description: Something went wrong
  */
 
-router.patch('/:id', (req: Request, res: Response) => {
+router.patch('/:id', (req: Request, res: Response, next: NextFunction) => {
     try {
         const { task: updatedTask } = req.body || {};
         const { id }= req.params || {};
-        if (!id) {
-            res.status(400).json({ error: 'Task id is required' });
-            return;
-        }
+        if (!id) throw new BadRequestError('Task id is required');
 
         const task = tasks.find(task => Number(task.id) === Number(id));
-        if (!task) {
-            res.status(404).json({ error: 'Task not found' });
-            return;
-        }
+        if (!task) throw new NotFoundError('Task not found');
 
         const newTask = { ... task, ...updatedTask}
-        res.json({ status: 'ok', task: newTask });
+        res.json({ task: newTask });
     } catch (error) {
-        res.status(500).json({ error: error instanceof Error ? error.message : error });
+        next(error)
     }
 })
 

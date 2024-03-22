@@ -1,6 +1,7 @@
 import express from 'express';
 import { users } from '../mocks/users';
 import { Request, Response } from 'express';
+import { BadRequestError, NotFoundError } from '../models/errors';
 
 const usersRouter = express.Router();
 
@@ -21,14 +22,16 @@ const usersRouter = express.Router();
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/User'
+ *       500:
+ *         description: Something went wrong
  */
 
-usersRouter.get('/', (_, res: Response) => {
+usersRouter.get('/', (_, res: Response, next) => {
     const list = users.map(user => ({ id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }));
     try {
         res.json({ users: [...list] });
     } catch (error) {
-        res.status(500).json({ error: error instanceof Error ? error.message : error });
+        next(error)
     }
 })
 
@@ -51,26 +54,24 @@ usersRouter.get('/', (_, res: Response) => {
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid request
  *       404:
- *         description: Пользователь не найден
+ *         description: Users not found
+ *       500:
+ *         description: Something went wrong
  */
 
-usersRouter.get('/:id', (req: Request, res: Response) => {
+usersRouter.get('/:id', (req: Request, res: Response, next) => {
     try {
-        const { id }= req.params || {};
-    if (!id) {
-        res.status(400).json({ error: 'User id is required' });
-        return;
-    }
+        const { id } = req.params || {};
+        if (!id) throw new BadRequestError('Invalid request');
     const user = users.find(user => Number(user.id) === Number(id));
-    if (!user) {
-        res.status(404).json({ error: 'User not found' });
-        return;
-    }
+    if (!user) throw new NotFoundError('User not found');
     const userData = { id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }
     res.json({ user: userData });
     } catch (error) {
-        res.status(500).json({ error: error instanceof Error ? error.message : error });
+        next(error)
     }
 })
 
@@ -103,21 +104,21 @@ usersRouter.get('/:id', (req: Request, res: Response) => {
  *                   type: array
  *                   items:
  *                     $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid request
  *       500:
- *         description: Внутренняя ошибка сервера
+ *         description: Something went wrong
  */
+ 
 
-usersRouter.delete('/:id', (req: Request, res: Response) => {
+usersRouter.delete('/:id', (req: Request, res: Response, next) => {
     try {
         const { id }= req.params || {};
-        if (!id) {
-            res.status(400).json({ error: 'User id is required' });
-            return;
-        }
+        if (!id) throw new BadRequestError('Invalid request');
         const newUsers = users.filter(user => Number(user.id) !== Number(id));
-        res.json({ status: 'ok', user_id: id, users: newUsers });
+        res.json({ status: 'ok', user_id: id, });
     } catch (error) {
-        res.status(500).json({ error: error instanceof Error ? error.message : error });
+        next(error);
     }
 })
 
@@ -147,31 +148,27 @@ usersRouter.delete('/:id', (req: Request, res: Response) => {
  *                   type: object
  *                   items:
  *                     $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid request
+ *       404:
+ *         description: User not found
  *       500:
- *         description: Внутренняя ошибка сервера
- *     404:
- *        description: Пользователь не найден
+ *         description: Something went wrong
  */
 
-usersRouter.patch('/:id', (req: Request, res: Response) => {
+usersRouter.patch('/:id', (req: Request, res: Response, next) => {
     try {
         const { rating } = req.body || {};
-        const { id }= req.params || {};
-        if (!id) {
-            res.status(400).json({ error: 'User id is required' });
-            return;
-        }
+        const { id } = req.params || {};
+        if (!id) throw new BadRequestError('Invalid request');
     
         const user = users.find(user => Number(user.id) === Number(id));
-        if (!user) {
-            res.status(404).json({ error: 'User not found' });
-            return;
-        }
+        if (!user) throw new NotFoundError('User not found');
     
-        const newUser ={ ...user, rating}
+        const newUser = { ...user, rating }
         res.json({ status: 'ok', user: newUser});   
     } catch(error) {
-        res.status(500).json({ error: error instanceof Error ? error.message : error });
+        next(error);
     }
 })
 
