@@ -2,6 +2,7 @@ import express from 'express';
 import { users } from '../mocks/users';
 import { Request, Response } from 'express';
 import { BadRequestError, NotFoundError } from '../models/errors';
+import UsersController from '../controllers/UsersController';
 
 const usersRouter = express.Router();
 
@@ -26,14 +27,7 @@ const usersRouter = express.Router();
  *         description: Something went wrong
  */
 
-usersRouter.get('/', (_, res: Response, next) => {
-    const list = users.map(user => ({ id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }));
-    try {
-        res.json({ users: [...list] });
-    } catch (error) {
-        next(error)
-    }
-})
+usersRouter.get('/', UsersController.getUsers);
 
 /**
  * @swagger
@@ -62,18 +56,7 @@ usersRouter.get('/', (_, res: Response, next) => {
  *         description: Something went wrong
  */
 
-usersRouter.get('/:id', (req: Request, res: Response, next) => {
-    try {
-        const { id } = req.params || {};
-        if (!id) throw new BadRequestError('Invalid request');
-    const user = users.find(user => Number(user.id) === Number(id));
-    if (!user) throw new NotFoundError('User not found');
-    const userData = { id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }
-    res.json({ user: userData });
-    } catch (error) {
-        next(error)
-    }
-})
+usersRouter.get('/:id', UsersController.getUserById);
 
 /**
  * @swagger
@@ -111,16 +94,7 @@ usersRouter.get('/:id', (req: Request, res: Response, next) => {
  */
  
 
-usersRouter.delete('/:id', (req: Request, res: Response, next) => {
-    try {
-        const { id }= req.params || {};
-        if (!id) throw new BadRequestError('Invalid request');
-        const newUsers = users.filter(user => Number(user.id) !== Number(id));
-        res.json({ status: 'ok', user_id: id, });
-    } catch (error) {
-        next(error);
-    }
-})
+usersRouter.delete('/:id', UsersController.deleteUser)
 
 /**
  * @swagger
@@ -156,20 +130,6 @@ usersRouter.delete('/:id', (req: Request, res: Response, next) => {
  *         description: Something went wrong
  */
 
-usersRouter.patch('/:id', (req: Request, res: Response, next) => {
-    try {
-        const { rating } = req.body || {};
-        const { id } = req.params || {};
-        if (!id) throw new BadRequestError('Invalid request');
-    
-        const user = users.find(user => Number(user.id) === Number(id));
-        if (!user) throw new NotFoundError('User not found');
-    
-        const newUser = { ...user, rating }
-        res.json({ status: 'ok', user: newUser});   
-    } catch(error) {
-        next(error);
-    }
-})
+usersRouter.patch('/:id', UsersController.updateUser)
 
 export default usersRouter;

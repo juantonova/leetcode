@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 
 import { tasks } from '../mocks/tasks';
 import { BadRequestError, NotFoundError } from '../models/errors';
+import TasksController from '../controllers/TasksController';
 
 const router = express.Router();
 
@@ -27,13 +28,7 @@ const router = express.Router();
  *         description: Ошибка сервера
  */
 
-router.get("/", (_, res: Response, next: NextFunction) => {
-    try {
-        res.json({ tasks });
-    } catch(error) {
-        next(error)
-    }
-})
+router.get("/", TasksController.getTasks)
 
 /**
  * @swagger
@@ -64,17 +59,7 @@ router.get("/", (_, res: Response, next: NextFunction) => {
  *       500:
  *         description: Something went wrong
  */
-router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { id }= req.params || {};
-        if (!id) throw new BadRequestError('Task id is required');
-        const task = tasks.find(task => Number(task.id) === Number(id));
-        if (!task) throw new NotFoundError('Task not found');
-        res.json({ task });
-    } catch(error) {
-        next(error)
-    }
-})
+router.get('/:id', TasksController.getTaskById)
 
 /**
  * @swagger
@@ -104,19 +89,7 @@ router.get('/:id', (req: Request, res: Response, next: NextFunction) => {
  *       500:
  *         description: Something went wrong
  */
-router.post('/', (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { description, incoming_example, outgoing_example, tags, category, additional_info, score, title } = req.body || {};
-        if (!description || !incoming_example || !outgoing_example || !tags || !category || !additional_info || !score || !title) {
-            throw new BadRequestError('Invalid request');
-        }
-    
-        const newTask = { id: tasks.length + 1, ...req.body };
-        res.json({ task: newTask }); 
-    } catch(error) {
-        next(error);
-    }
-})
+router.post('/', TasksController.addTask)
 
 
 /**
@@ -149,16 +122,7 @@ router.post('/', (req: Request, res: Response, next: NextFunction) => {
  *       500:
  *         description: Something went wrong
  */
-router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { id }= req.params || {};
-        if (!id) throw new BadRequestError('Task id is required');
-        const newTasks = tasks.filter(task => Number(task.id) !== Number(id));
-        res.json({ task_id: id });
-    } catch(error) {
-        next(error)
-    }
-})
+router.delete('/:id', TasksController.deleteTask)
 
 /**
  * @swagger
@@ -192,21 +156,7 @@ router.delete('/:id', (req: Request, res: Response, next: NextFunction) => {
  *         description: Something went wrong
  */
 
-router.patch('/:id', (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { task: updatedTask } = req.body || {};
-        const { id }= req.params || {};
-        if (!id) throw new BadRequestError('Task id is required');
-
-        const task = tasks.find(task => Number(task.id) === Number(id));
-        if (!task) throw new NotFoundError('Task not found');
-
-        const newTask = { ... task, ...updatedTask}
-        res.json({ task: newTask });
-    } catch (error) {
-        next(error)
-    }
-})
+router.patch('/:id', TasksController.updateTask)
 
 
 export default router;
