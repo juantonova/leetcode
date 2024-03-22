@@ -1,7 +1,5 @@
 // Импорт Express
 import express from 'express';
-import passport from 'passport';
-import session from 'express-session';
 
 
 // Создание нового экземпляра Express
@@ -17,17 +15,8 @@ import commentsRouter from './routes/comments';
 import solutionsRouter from './routes/solutions';
 import tasksRouter from './routes/tasks';
 import usersRouter from './routes/users';
-import authRouter from './routes/auth';
 import swaggerOptions from './swaggerOptions';
 
-// настройка express session
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: false,
-  }));
-
-app.use(passport.authenticate('session'));
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
@@ -41,7 +30,6 @@ app.use('/api/comments', commentsRouter);
 app.use('/api/solutions', solutionsRouter);
 app.use('/api/tasks', tasksRouter);
 app.use('/api/users', usersRouter);
-app.use('/api/auth', authRouter);
 
 // Определение порта
 const port = 3000;
