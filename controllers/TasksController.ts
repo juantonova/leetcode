@@ -14,7 +14,7 @@ class TasksController {
         return tasks.filter(task => task.id !== Number(id));
     }
 
-    private createTask(newTaskData: Omit<Task, 'id'>) {
+    private createTask = (newTaskData: Omit<Task, 'id'>) => {
         return {
             id: tasks.length + 1,
             ...newTaskData
@@ -25,7 +25,7 @@ class TasksController {
         return { ...task, ...updatedTaskData };
     }
     
-    getTasks(req: Request, res: Response, next: NextFunction) {
+    getTasks = (req: Request, res: Response, next: NextFunction) => {
             try {
                 res.json({ tasks });
             } catch(error) {
@@ -33,7 +33,7 @@ class TasksController {
             }
     }
 
-    getTaskById(req: Request, res: Response, next: NextFunction) {
+    getTaskById = (req: Request, res: Response, next: NextFunction) => {
             try {
                 const { id }= req.params || {};
                 if (!id) throw new BadRequestError('Task id is required');
@@ -45,7 +45,7 @@ class TasksController {
             }
     }
 
-    addTask(req: Request, res: Response, next: NextFunction) {
+    addTask = (req: Request, res: Response, next: NextFunction) => {
             try {
                 const { description, incoming_example, outgoing_example, tags, category, additional_info, score, title } = req.body || {};
                 if (!description || !incoming_example || !outgoing_example || !tags || !category || !additional_info || !score || !title) {
@@ -59,7 +59,7 @@ class TasksController {
             }
     }
 
-    deleteTask(req: Request, res: Response, next: NextFunction) {
+    deleteTask = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params || {};
             if (!id) throw new BadRequestError('Task id is required');
@@ -70,7 +70,7 @@ class TasksController {
         }
     }
 
-    updateTask(req: Request, res: Response, next: NextFunction) {
+    updateTask = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { task: updatedTask } = req.body || {};
             const { id } = req.params || {};

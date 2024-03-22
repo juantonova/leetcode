@@ -6,24 +6,24 @@ import { BadRequestError, NotFoundError } from "../models/errors";
 
 class UsersController {
 
-    private updateUserInfoForResponse(user: User)  {
+    private updateUserInfoForResponse = (user: User) => {
         const { id, name, rating, role, permissions } = user;
         return { id, name, rating, role, permissions };
     }
 
-    private findUserById(id: string) {
+    private findUserById = (id: string) => {
         return users.find(user => user.id === Number(id));
     }
 
-    private deleteUserById(id: string) {
+    private deleteUserById = (id: string) => {
         return users.filter(user => user.id !== Number(id));
     }
 
-    private updateUserInfo(user: User, rating: number) {
+    private updateUserInfo = (user: User, rating: number) => {
         return  { ...user, rating };
     }
 
-    getUsers(req: Request, res: Response, next: NextFunction) {
+    getUsers = (req: Request, res: Response, next: NextFunction) =>{
         const usersForResponse = users.map(this.updateUserInfoForResponse)
         try {
             res.json({ users: usersForResponse });
@@ -32,7 +32,7 @@ class UsersController {
         }
     }
 
-    getUserById(req: Request, res: Response, next: NextFunction) {
+    getUserById = (req: Request, res: Response, next: NextFunction) => {
         try {
         const { id } = req.params || {};
         if (!id) throw new BadRequestError('Invalid request');
@@ -45,7 +45,7 @@ class UsersController {
         }
     }
 
-    deleteUser(req: Request, res: Response, next: NextFunction) {
+    deleteUser = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id }= req.params || {};
             if (!id) throw new BadRequestError('Invalid request');
@@ -56,7 +56,7 @@ class UsersController {
         }
     }
 
-    updateUser(req: Request, res: Response, next: NextFunction) {
+    updateUser = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { rating } = req.body || {};
             const { id } = req.params || {};

@@ -5,22 +5,22 @@ import { Comment } from "../models/comment";
 
 class CommentsController {
 
-    private findCommentsByTaskId(id: string) {
+    private findCommentsByTaskId = (id: string) => {
         return comments.filter(comment => comment.task_id === Number(id));
     }
 
-    private deleteCommentById(id: string) {
+    private deleteCommentById = (id: string) => {
         return comments.filter(comment => comment.id !== Number(id));
     }
 
-    private createComment(comment: Omit<Comment, 'id'>) {
+    private createComment = (comment: Omit<Comment, 'id'>) => {
         return {
             id: comments.length + 1,
             ...comment
         };
     }
 
-    getComments(req: Request, res: Response, next: NextFunction) {
+    getComments = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { task_id } = req.params || {};
             if (!task_id) throw new BadRequestError('Task id is required');
@@ -32,7 +32,7 @@ class CommentsController {
         }
     }
 
-    addComment(req: Request, res: Response, next: NextFunction) {
+    addComment = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { task_id, user_id, content, created_at } = req.body || {};
             if (!task_id || !user_id || !content || !created_at) {
@@ -45,7 +45,7 @@ class CommentsController {
             }
     }
 
-    deleteComment(req: Request, res: Response, next: NextFunction) {
+    deleteComment = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params || {};
             if (!id) throw new BadRequestError('Task id is required');
