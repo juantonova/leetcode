@@ -23,9 +23,13 @@ class CommentsController {
     getComments = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { task_id } = req.params || {};
-            if (!task_id) throw new BadRequestError('Task id is required');
+            if (!task_id) {
+                throw new BadRequestError('Task id is required');
+            }
             const comments = this.findCommentsByTaskId(task_id);
-            if (!comments.length) throw new NotFoundError('Comments not found');
+            if (!comments.length) {
+                throw new NotFoundError('Comments not found');
+            }
             res.json({ comments });
         } catch (error) {
             next(error)
@@ -48,7 +52,9 @@ class CommentsController {
     deleteComment = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params || {};
-            if (!id) throw new BadRequestError('Task id is required');
+            if (!id) {
+                throw new BadRequestError('Task id is required');
+            }
             this.deleteCommentById(id);
             res.json({ comment_id: id });
         } catch (error) {

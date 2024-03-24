@@ -38,6 +38,7 @@ const swaggerOptions = {
                 description: 'User permissions',
               },
             },
+          },
             Task: {
               type: 'object',
               properties: {
@@ -81,14 +82,77 @@ const swaggerOptions = {
                   description: 'Task category',
                 },
               }
-            },
         
-        }
+        },
+        Solution: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'integer',
+              description: 'Solution ID',
+            },
+            task_id: {
+              type: 'integer',
+              description: 'Task ID',
+            },
+            user_id: {
+              type: 'integer',
+              description: 'Task ID',
+            },
+            solution: {
+              type: 'string',
+              description: 'Solution',
+            },
+          },
+        },
+        Comment: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'integer',
+              description: 'Comment ID',
+            },
+            task_id: {
+              type: 'integer',
+              description: 'Task ID',
+            },
+            user_id: {
+              type: 'integer',
+              description: 'User ID',
+            },
+            comment: {
+              type: 'string',
+              description: 'Comment',
+            },
+          },
+        },
+        Rating: {
+          type: 'object',
+          properties: {
+            id: {
+              type: 'integer',
+              description: 'Rating ID',
+            },
+            task_id: {
+              type: 'integer',
+              description: 'Task ID',
+            },
+            user_id: {
+              type: 'integer',
+              description: 'User ID',
+            },
+            rating: {
+              type: 'integer',
+              description: 'Rating',
+            },
+          },
+        },
+
     }
 }
     
 },
-    apis: ['./routes/rating.js', './routes/comments.js', './routes/solutions.js', './routes/tasks.js', './routes/users.js'], // путь к файлам, где находятся ваши маршруты
+    apis: ['./routes/rating.ts', './routes/comments.ts', './routes/solutions.ts', './routes/tasks.ts', './routes/users.ts'], // путь к файлам, где находятся ваши маршруты
 }
 
 export default swaggerOptions;

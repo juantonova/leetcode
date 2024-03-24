@@ -23,7 +23,7 @@ class UsersController {
         return  { ...user, rating };
     }
 
-    getUsers = (req: Request, res: Response, next: NextFunction) =>{
+    getUsers = (_: Request, res: Response, next: NextFunction) =>{
         const usersForResponse = users.map(this.updateUserInfoForResponse)
         try {
             res.json({ users: usersForResponse });
@@ -35,9 +35,13 @@ class UsersController {
     getUserById = (req: Request, res: Response, next: NextFunction) => {
         try {
         const { id } = req.params || {};
-        if (!id) throw new BadRequestError('Invalid request');
+        if (!id) {
+            throw new BadRequestError('Invalid request');
+        }
         const user = this.findUserById(id);
-        if (!user) throw new NotFoundError('User not found');
+        if (!user) {
+            throw new NotFoundError('User not found');
+        }
         const userForResponse = this.updateUserInfoForResponse(user);
         res.json({ user: userForResponse });
         } catch (error) {
@@ -48,7 +52,9 @@ class UsersController {
     deleteUser = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id }= req.params || {};
-            if (!id) throw new BadRequestError('Invalid request');
+            if (!id) {
+                throw new BadRequestError('Invalid request');
+            }
             this.deleteUserById(id);
             res.json({  user_id: id });
         } catch (error) {
@@ -60,10 +66,14 @@ class UsersController {
         try {
             const { rating } = req.body || {};
             const { id } = req.params || {};
-            if (!id) throw new BadRequestError('Invalid request');
+            if (!id) {
+                throw new BadRequestError('Invalid request');
+            }
         
             const user = this.findUserById(id);
-            if (!user) throw new NotFoundError('User not found');
+            if (!user) {
+                throw new NotFoundError('User not found');
+            }
         
             const updatedUser = this.updateUserInfo(user, rating);
             const userForResponse = this.updateUserInfoForResponse(updatedUser);

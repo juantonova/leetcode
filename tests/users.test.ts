@@ -17,7 +17,9 @@ describe('GET /api/users/:id', () => {
     it('return user 1', async () => {
       const response = await request(app).get(`/api/users/1`);
       const user = users.find(user => Number(user.id) === 1);
-      if (!user) throw new Error('User not found');
+      if (!user) {
+        throw new Error('User not found');
+      }
       const userData = { id: user.id, name: user.name, rating: user.rating, role: user.role, permissions: user.permissions }
   
       expect(response.statusCode).toBe(200);

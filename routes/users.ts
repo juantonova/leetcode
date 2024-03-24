@@ -1,7 +1,4 @@
 import express from 'express';
-import { users } from '../mocks/users';
-import { Request, Response } from 'express';
-import { BadRequestError, NotFoundError } from '../models/errors';
 import UsersController from '../controllers/UsersController';
 
 const usersRouter = express.Router();
@@ -40,18 +37,22 @@ usersRouter.get('/', UsersController.getUsers);
  *         required: true
  *         description: ID пользователя
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Данные пользователя
  *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/User'
+ *           schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   type: object
+ *                   items:
+ *                     $ref: '#/components/schemas/User'
  *       400:
  *         description: Invalid request
  *       404:
- *         description: Users not found
+ *         description: User not found
  *       500:
  *         description: Something went wrong
  */
@@ -60,7 +61,7 @@ usersRouter.get('/:id', UsersController.getUserById);
 
 /**
  * @swagger
- * /{id}:
+ * /users/{id}:
  *   delete:
  *     summary: Удалить пользователя
  *     parameters:
@@ -69,24 +70,17 @@ usersRouter.get('/:id', UsersController.getUserById);
  *         required: true
  *         description: ID пользователя
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
- *         description: Данные пользователя
+ *         description: Ид пользователя
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
- *                   example: ok
  *                 user_id:
- *                   type: integer
- *                 users:
- *                   type: array
- *                   items:
- *                     $ref: '#/components/schemas/User'
+ *                   type: string        
  *       400:
  *         description: Invalid request
  *       500:
@@ -98,7 +92,7 @@ usersRouter.delete('/:id', UsersController.deleteUser)
 
 /**
  * @swagger
- * /{id}:
+ * /users/{id}:
  *   patch:
  *     summary: Изменить данные пользователя
  *     parameters:
@@ -107,17 +101,23 @@ usersRouter.delete('/:id', UsersController.deleteUser)
  *         required: true
  *         description: ID пользователя
  *         schema:
- *           type: integer
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               rating:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Данные пользователя
  *         content:
- *           application/json:
- *             schema:
+ *           schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
  *                 user:
  *                   type: object
  *                   items:

@@ -1,8 +1,4 @@
-import express, { NextFunction } from 'express';
-import { Request, Response } from "express";
-
-import { tasks } from '../mocks/tasks';
-import { BadRequestError, NotFoundError } from '../models/errors';
+import express from 'express';
 import TasksController from '../controllers/TasksController';
 
 const router = express.Router();
@@ -25,7 +21,7 @@ const router = express.Router();
  *                   items:
  *                     $ref: '#/components/schemas/Task'
  *       500:
- *         description: Ошибка сервера
+ *         description: Something went wrong
  */
 
 router.get("/", TasksController.getTasks)
@@ -41,7 +37,7 @@ router.get("/", TasksController.getTasks)
  *         required: true
  *         description: ID задачи
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Данные задачи
@@ -50,8 +46,10 @@ router.get("/", TasksController.getTasks)
  *             schema:
  *               type: object
  *               properties:
- *                 task:
- *                   type: '#/components/schemas/Task'
+ *                 tasks:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Task'
  *       400:
  *         description: Task id is required
  *       404:
@@ -60,6 +58,7 @@ router.get("/", TasksController.getTasks)
  *         description: Something went wrong
  */
 router.get('/:id', TasksController.getTaskById)
+
 
 /**
  * @swagger
@@ -72,7 +71,32 @@ router.get('/:id', TasksController.getTaskById)
  *         required: true
  *         description: ID задачи
  *         schema:
- *           type: integer
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               incoming_example:
+ *                 type: string
+ *               outgoing_example:
+ *                 type: string
+ *               tags:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               category:
+ *                type: string
+ *               additional_info:
+ *                type: string
+ *               score:
+ *                type: number
  *     responses:
  *       200:
  *         description: Данные задачи
@@ -81,9 +105,9 @@ router.get('/:id', TasksController.getTaskById)
  *             schema:
  *               type: object
  *               properties:
- *                 tasks:
- *                   type: array
- *                   items:  '#/components/schemas/Task'
+ *                 task:
+ *                   type: object 
+ *                   $ref: '#/components/schemas/Task'
  *       400:
  *         description: Invalid request
  *       500:
@@ -94,7 +118,7 @@ router.post('/', TasksController.addTask)
 
 /**
  * @swagger
- * /{id}:
+ * /tasks/{id}:
  *   delete:
  *     summary: Удалить задачу
  *     parameters:
@@ -103,7 +127,7 @@ router.post('/', TasksController.addTask)
  *         required: true
  *         description: ID задачи
  *         schema:
- *           type: integer
+ *           type: string
  *     responses:
  *       200:
  *         description: Данные задачи
@@ -112,10 +136,7 @@ router.post('/', TasksController.addTask)
  *             schema:
  *               type: object
  *               properties:
- *                 tasks:
- *                   type: array
- *                   items:  '#/components/schemas/Task'
- *                 status: 
+ *                 task_id:
  *                   type: string
  *       400:
  *         description: Task id is required
@@ -126,7 +147,7 @@ router.delete('/:id', TasksController.deleteTask)
 
 /**
  * @swagger
- * /{id}:
+ * /tasks/{id}:
  *   patch:
  *     summary: Изменить задачу
  *     parameters:
@@ -135,7 +156,31 @@ router.delete('/:id', TasksController.deleteTask)
  *         required: true
  *         description: ID задачи
  *         schema:
- *           type: integer
+ *           type: string
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               title:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               incoming_example:
+ *                 type: string
+ *               outgoing_example:
+ *                 type: string
+ *               tags:
+ *                 type: array
+ *                 items: 
+ *                    type: string
+ *               category:
+ *                type: string
+ *               additional_info:
+ *                type: string
+ *               score:
+ *                type: number
  *     responses:
  *       200:
  *         description: Данные задачи
@@ -145,9 +190,8 @@ router.delete('/:id', TasksController.deleteTask)
  *               type: object
  *               properties:
  *                 task:
- *                   type:  '#/components/schemas/Task'
- *                 status: 
- *                   type: string
+ *                   type: object
+ *                   $ref: '#/components/schemas/Task'
  *       400:
  *         description: Task id is required
  *       404:

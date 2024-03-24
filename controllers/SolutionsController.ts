@@ -21,11 +21,15 @@ class SolutionsController {
     getSolutions = (req: Request, res: Response,  next: NextFunction) => {
         try {
             const { task_id }= req.params || {};
-            if (!task_id) throw new BadRequestError('Task id is required');
+            if (!task_id) {
+                throw new BadRequestError('Task id is required');
+            }
         
             const solutions = this.findSolutionById(task_id);
 
-            if (!solutions.length) throw new NotFoundError('Solutions not found');
+            if (!solutions.length) {
+                throw new NotFoundError('Solutions not found');
+            }
             res.json({ solutions });
         } catch(error) {
             next(error);

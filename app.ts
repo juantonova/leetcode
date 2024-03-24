@@ -15,7 +15,7 @@ import solutionsRouter from './routes/solutions';
 import tasksRouter from './routes/tasks';
 import usersRouter from './routes/users';
 import swaggerOptions from './swaggerOptions';
-import ErrorHandler from './middlewares/ErrorHandler';
+import errorHandler from './middlewares/ErrorHandler';
 
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -31,7 +31,7 @@ app.use('/api/solutions', solutionsRouter);
 app.use('/api/tasks', tasksRouter);
 app.use('/api/users', usersRouter);
 
-app.use(ErrorHandler)
+app.use(errorHandler)
 
 // Определение порта
 const port = 3000;

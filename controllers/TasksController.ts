@@ -36,9 +36,13 @@ class TasksController {
     getTaskById = (req: Request, res: Response, next: NextFunction) => {
             try {
                 const { id }= req.params || {};
-                if (!id) throw new BadRequestError('Task id is required');
+                if (!id) {
+                    throw new BadRequestError('Task id is required');
+                }
                 const task = this.findTaskById(id);
-                if (!task) throw new NotFoundError('Task not found');
+                if (!task) {
+                    throw new NotFoundError('Task not found');
+                }
                 res.json({ task });
             } catch(error) {
                 next(error)
@@ -62,7 +66,9 @@ class TasksController {
     deleteTask = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { id } = req.params || {};
-            if (!id) throw new BadRequestError('Task id is required');
+            if (!id) {
+                throw new BadRequestError('Task id is required');
+            }
             this.deleteTaskById(id);
             res.json({ task_id: id });
         } catch(error) {
@@ -74,10 +80,14 @@ class TasksController {
         try {
             const { task: updatedTask } = req.body || {};
             const { id } = req.params || {};
-            if (!id) throw new BadRequestError('Task id is required');
+            if (!id) {
+                throw new BadRequestError('Task id is required');
+            }
             
             const task = this.findTaskById(id);
-            if (!task) throw new NotFoundError('Task not found');
+            if (!task) {
+                throw new NotFoundError('Task not found');
+            }
             const newTask = this.updateTaskInfo(task, updatedTask);
             res.json({ task: newTask });
         } catch (error) {

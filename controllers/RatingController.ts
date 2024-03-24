@@ -23,10 +23,14 @@ class RatingController {
     getRatingByTaskId = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { task_id }= req.params || {};
-            if (!task_id) throw new BadRequestError('Task id is required')
+            if (!task_id) {
+                throw new BadRequestError('Task id is required')
+            }
     
             const allRating = this.findRatingById(task_id);
-            if (!allRating.length) throw new NotFoundError('Rating not found');
+            if (!allRating.length){
+                throw new NotFoundError('Rating not found');
+            }
             const rating = this.countRating(allRating);
             res.json({ rating });
         } catch (error) {
@@ -37,7 +41,9 @@ class RatingController {
     addRating  = (req: Request, res: Response, next: NextFunction) => {
         try {
             const { rating, user_id, task_id } = req.body || {};
-            if (!rating || !user_id || !task_id) throw new BadRequestError('Invalid request')
+            if (!rating || !user_id || !task_id) {
+                throw new BadRequestError('Invalid request')
+            }
         
             const newRating = this.createRating({ rating, user_id, task_id });
 

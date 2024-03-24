@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ErrorWithStatus } from "../models/errors";
 
 
-const ErrorHandler = (err: ErrorWithStatus, req: Request, res: Response, next: () => void) => {
+const errorHandler = (err: ErrorWithStatus, req: Request, res: Response, next: () => void) => {
     const errStatus =  err.status || 500;
     const errMsg = err.message|| 'Something went wrong';
     res.status(errStatus).json({
@@ -12,4 +12,4 @@ const ErrorHandler = (err: ErrorWithStatus, req: Request, res: Response, next: (
     })
 }
 
-export default ErrorHandler
+export default errorHandler;
