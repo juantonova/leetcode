@@ -1,7 +1,7 @@
 import express from 'express';
 const router = express.Router();
 
-import CommentsController from "../controllers/CommentsController";
+import CommentsController from "../controllers/сommentsController";
 
 /**
  * @swagger

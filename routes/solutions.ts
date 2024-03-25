@@ -1,5 +1,5 @@
 import express from 'express';
-import SolutionsController from '../controllers/SolutionsController';
+import SolutionsController from '../controllers/solutionsController';
 
 const router = express.Router();
 

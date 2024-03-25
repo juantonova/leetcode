@@ -15,7 +15,7 @@ import solutionsRouter from './routes/solutions';
 import tasksRouter from './routes/tasks';
 import usersRouter from './routes/users';
 import swaggerOptions from './swaggerOptions';
-import errorHandler from './middlewares/ErrorHandler';
+import errorHandler from './middlewares/errorHandler';
 
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
